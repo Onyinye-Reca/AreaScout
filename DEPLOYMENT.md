@@ -23,10 +23,10 @@ Create a bucket, turn on public reads for it (or a public custom domain), and cr
 
 ## 3. API
 
-Build and start commands (Node 20 or newer):
+Build and start commands (Node 20 or newer). `--include=dev` matters: hosts set `NODE_ENV=production`, which would otherwise skip the compiler needed to build.
 
 ```
-npm ci && npm run build
+npm ci --include=dev && npm run build
 npm run start:prod
 ```
 
@@ -38,6 +38,7 @@ Health check path: `/health`. Set these environment variables on the host (never
 | `DB_TYPE` | `postgres` |
 | `DATABASE_URL` | your connection string |
 | `DB_SSL` | `true` |
+| `DB_SSL_CA` | Supabase's certificate authority, base64-encoded (see below). Without it the API stops with `self-signed certificate in certificate chain` |
 | `STORAGE_DRIVER` | `s3` |
 | `S3_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_PUBLIC_URL` | from step 2 |
 | `CORS_ORIGIN` | the website's address, e.g. `https://areascout.netlify.app` |
@@ -46,6 +47,11 @@ Health check path: `/health`. Set these environment variables on the host (never
 | `SEED_DEMO_DATA` | `true` for staging with sample homes, `false` otherwise |
 
 The host provides `PORT` and HTTPS. Cities and neighbourhoods are added automatically; sample listings only when `SEED_DEMO_DATA=true`.
+
+### Supabase certificate
+
+Supabase's database certificate isn't signed by a public authority, so the API must be told to trust it. In Supabase go to Project Settings → Database → SSL Configuration and download the certificate, then on a Mac run
+`base64 -i ~/Downloads/<file>.crt | tr -d '\n' | pbcopy` and paste the result as `DB_SSL_CA`. For a quick first test only, `DB_SSL_REJECT_UNAUTHORIZED=false` also works (the connection is encrypted but the server's identity isn't checked); remove it once `DB_SSL_CA` is set.
 
 ## 4. Website
 

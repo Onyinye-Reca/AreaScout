@@ -21,6 +21,13 @@ const envSchema = z.object({
   DB_SCHEMA: z.string().default('public'),
   /** Encrypt the database connection (needed for most hosted Postgres). */
   DB_SSL: z.enum(['true', 'false']).default('false').transform((v) => v === 'true'),
+  /**
+   * The database provider's certificate authority, for providers (like Supabase) whose certificate isn't
+   * signed by a public authority. Either the PEM text itself or that text base64-encoded.
+   */
+  DB_SSL_CA: z.string().optional(),
+  /** Set false ONLY as a stop-gap: the connection stays encrypted but the server's identity isn't checked. */
+  DB_SSL_REJECT_UNAUTHORIZED: z.enum(['true', 'false']).default('true').transform((v) => v === 'true'),
   /** Apply pending migrations when the app starts (Postgres only). */
   DB_MIGRATIONS_RUN: z.enum(['true', 'false']).default('true').transform((v) => v === 'true'),
   /** Where listing photos are kept: this server's disk (fine locally) or S3-compatible storage (needed on hosts whose disk is wiped on every deploy). */

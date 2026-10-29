@@ -66,7 +66,8 @@ import { SavedModule } from './modules/saved/saved.module';
           return {
             ...postgresOptions({
               DATABASE_URL: get('DATABASE_URL'), DB_HOST: get('DB_HOST'), DB_PORT: get('DB_PORT'), DB_USERNAME: get('DB_USERNAME'),
-              DB_PASSWORD: get('DB_PASSWORD'), DB_NAME: get('DB_NAME'), DB_SCHEMA: get('DB_SCHEMA'), DB_SSL: get('DB_SSL'), DB_MIGRATIONS_RUN: get('DB_MIGRATIONS_RUN'),
+              DB_PASSWORD: get('DB_PASSWORD'), DB_NAME: get('DB_NAME'), DB_SCHEMA: get('DB_SCHEMA'), DB_SSL: get('DB_SSL'), DB_SSL_CA: get('DB_SSL_CA'),
+              DB_SSL_REJECT_UNAUTHORIZED: get('DB_SSL_REJECT_UNAUTHORIZED'), DB_MIGRATIONS_RUN: get('DB_MIGRATIONS_RUN'),
             }),
             autoLoadEntities: true,
           };
